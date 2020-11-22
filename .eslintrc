@@ -21,7 +21,7 @@
     "quotes": ["error", "single"],
     "semi": ["error", "never"],
     "eol-last": ["error", "always"],
-    "keyword-spacing": ["error", "always"],
+    "keyword-spacing": ["error", {"before": true }],
     "key-spacing": [2, {"beforeColon": false, "afterColon": true}]
   }
 }

@@ -1,1 +1,1 @@
-### Base API in Typescript
+<h1 align="center">Typescript base API</h1>
