@@ -1,0 +1,13 @@
+openapi: 3.0.0
+info:
+  title: Sample OpenApi in Typescript
+  license:
+  name: MIT
+  version: 1.0.0
+paths:
+  get:
+    responses:
+      '200':
+        description: A list of users.
+        content:
+          application/json
