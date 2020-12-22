@@ -1,5 +1,6 @@
 import express from 'express'
 import {
+  login,
   createRoute,
   getAllRoute,
   updateRoute,
@@ -10,6 +11,7 @@ const app = express()
 app.use(express.json())
 
 app.use(
+  login,
   createRoute,
   getAllRoute,
   updateRoute,

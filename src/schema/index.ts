@@ -7,7 +7,8 @@ const User = new Schema ({
   name: String,
   email: String,
   phone: Number,
-  isActive: Boolean
+  isActive: Boolean,
+  password: String
 })
 
 export default User

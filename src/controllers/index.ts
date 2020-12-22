@@ -6,14 +6,30 @@ class UserData {
   email: string;
   phone: number;
   isActive: boolean;
+  password: string;
   
-  constructor (name: string, email: string, phone: number, isActive: boolean) {
+  constructor (name: string, email: string, phone: number, isActive: boolean, password: string) {
     this.name = name
     this.email = email
     this.phone = phone
     this.isActive = isActive
+    this.password = password
   }
 }
+
+const userLogin = (async (req: Request, res: Response):Promise<Response> => {
+  try {
+    const email = await modelUser.find()
+    const password = await modelUser.find()
+
+    if (email && password) {
+      return res.status(200).json({ message: 'successfully logged in!!' })
+    }
+    console.log(email, password)
+  } catch (error) {
+    return res.status(500).json('Internal Server Error')
+  }
+})
 
 const findAllUsers = (async(req: Request, res: Response):Promise<Response> => {
   try {
@@ -29,7 +45,14 @@ const findAllUsers = (async(req: Request, res: Response):Promise<Response> => {
 const createUser = (async(req: Request, res: Response):Promise<Response> => {
   try {
 
-    const user = new UserData(req.body.name, req.body.email, req.body.phone, req.body.isActive)
+    const user = new UserData(
+      req.body.name,
+      req.body.email,
+      req.body.phone,
+      req.body.isActive,
+      req.body.password
+    )
+
     const saveUser = await modelUser.create(user)
     saveUser.save()
 
@@ -43,7 +66,13 @@ const createUser = (async(req: Request, res: Response):Promise<Response> => {
 const updateUser = (async(req: Request, res: Response):Promise<Response> => {
   try {
 
-    const user = new UserData(req.body.name, req.body.email, req.body.phone, req.body.isActive)
+    const user = new UserData(
+      req.body.name,
+      req.body.email,
+      req.body.phone,
+      req.body.isActive,
+      req.body.password
+    )
 
     const update = await modelUser.findByIdAndUpdate(req.params.id, user)
     update.save()
@@ -69,6 +98,7 @@ const deleteUser = (async(req: Request, res: Response):Promise<Response> => {
 })
 
 export {
+  userLogin,
   createUser,
   findAllUsers,
   updateUser,
