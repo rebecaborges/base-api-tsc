@@ -6,3 +6,6 @@ services:
     restart: always
     ports:
       - 27017:27017
+    build: .
+    volumes:
+      - .:/code
