@@ -6,6 +6,14 @@ services:
     restart: always
     ports:
       - 27017:27017
+
+  api:
     build: .
+    ports:
+      - 3000:3000
     volumes:
       - .:/code
+    container_name: 'api-tsc'
+    command: npm run dev
+    links:
+      - mongo
