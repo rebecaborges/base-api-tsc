@@ -1,9 +1,12 @@
 import mongoose from 'mongoose'
-import connect from '../config/config'
 import User from '../schema/index'
 
-connect
+const connect = mongoose.createConnection('mongodb://mongo:27017' || process.env.MONGODB_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+})
 
-const modelUser = mongoose.model('User', User)
+const modelUser = connect.model('User', new mongoose.Schema(User))
 
 export default modelUser
