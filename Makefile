@@ -1,5 +1,8 @@
 up:
-	@docker-compose up
+	@docker-compose up -d mongo
+
+api:
+	@docker-compose up api
 
 down:
 	@docker-compose down

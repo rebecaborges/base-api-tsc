@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import modelUser from '../model/index'
+import jwt from 'jsonwebtoken'
 
 class UserData {
   name: string;
@@ -8,7 +9,7 @@ class UserData {
   isActive: boolean;
   password: string;
   
-  constructor (name: string, email: string, phone: number, isActive: boolean, password: string) {
+  constructor (name:string, email:string, phone:number, isActive:boolean, password:string) {
     this.name = name
     this.email = email
     this.phone = phone
@@ -17,34 +18,41 @@ class UserData {
   }
 }
 
-const userLogin = (async (req: Request, res: Response):Promise<Response> => {
+const userLogin = (async (req:Request, res:Response):Promise<Response> => {
   try {
-    const email = await modelUser.find()
-    const password = await modelUser.find()
+    const login = await modelUser.findOne({email: req.body.email, password: req.body.password})
 
-    if (email && password) {
-      return res.status(200).json({ message: 'successfully logged in!!' })
+    if (login !== null) {
+      try {
+        const token = jwt.sign({login}, 'secret')
+
+        return res.status(200).json({ token: token })
+
+      } catch (error) {
+        console.log('Unable to sign in', error)
+      }
     }
-    console.log(email, password)
+
+    return res.status(404).json({message: 'User not found!' })
+
   } catch (error) {
     return res.status(500).json('Internal Server Error')
   }
 })
 
-const findAllUsers = (async(req: Request, res: Response):Promise<Response> => {
+const findAllUsers = (async(req:Request, res:Response):Promise<Response> => {
   try {
     const getAll = await modelUser.find()
 
     return res.json(getAll)
-  }
-  catch (error) {
+
+  } catch (error) {
     return res.status(500).json('Internal Server Error')
   }
 })
 
-const createUser = (async(req: Request, res: Response):Promise<Response> => {
+const createUser = (async(req:Request, res:Response):Promise<Response> => {
   try {
-
     const user = new UserData(
       req.body.name,
       req.body.email,
@@ -57,13 +65,13 @@ const createUser = (async(req: Request, res: Response):Promise<Response> => {
     saveUser.save()
 
     return res.json(saveUser)
-  }
-  catch (error) {
+
+  } catch (error) {
     return res.status(500).json('Internal Server Error')
   }
 })
 
-const updateUser = (async(req: Request, res: Response):Promise<Response> => {
+const updateUser = (async(req:Request, res:Response):Promise<Response> => {
   try {
 
     const user = new UserData(
@@ -78,21 +86,21 @@ const updateUser = (async(req: Request, res: Response):Promise<Response> => {
     update.save()
 
     return res.json(update)
-  }
-  catch (error) {
+
+  } catch (error) {
     return res.status(500).json('Internal Server Error')
   }
 })
 
-const deleteUser = (async(req: Request, res: Response):Promise<Response> => {
+const deleteUser = (async(req:Request, res:Response):Promise<Response> => {
   try {
     const deleteUser = await modelUser.findOneAndRemove({_id: req.params.id})
 
     deleteUser.save()
 
     return res.json(`User ${req.params.id} was deleted!`)
-  }
-  catch (error) {
+
+  } catch (error) {
     return res.status(500).json('Internal Server Error')
   }
 })

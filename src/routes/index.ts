@@ -1,4 +1,5 @@
 import express from 'express'
+import tokenValidation from '../middlewares/jwt'
 import {
   userLogin,
   createUser,
@@ -9,15 +10,34 @@ import {
 
 const router = express.Router()
 
-const login = router.get('/login', userLogin)
+const login = router.get(
+  '/login',
+  userLogin
+)
 
-const createRoute = router.post('/', createUser)
+const getAllRoute = router.get(
+  '/',
+  tokenValidation,
+  findAllUsers,
+)
 
-const getAllRoute = router.get('/', findAllUsers)
+const createRoute = router.post(
+  '/',
+  tokenValidation,
+  createUser
+)
 
-const updateRoute = router.put('/user/:id', updateUser)
+const updateRoute = router.put(
+  '/user/:id',
+  tokenValidation,
+  updateUser
+)
 
-const deleteUserRoute = router.delete('/user/:id', deleteUser)
+const deleteUserRoute = router.delete(
+  '/user/:id',
+  tokenValidation,
+  deleteUser
+)
 
 export {
   login,
