@@ -1,4 +1,5 @@
 import express from 'express'
+import * as OpenApiValidator from 'express-openapi-validator'
 import {
   login,
   createRoute,
@@ -8,6 +9,15 @@ import {
 } from './routes/index'
 
 const app = express()
+
+app.use(
+  OpenApiValidator.middleware({
+    apiSpec: './openapi.yaml',
+    validateRequests: true,
+    validateResponses: true
+  })
+)
+
 app.use(express.json())
 
 app.use(

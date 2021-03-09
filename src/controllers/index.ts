@@ -18,6 +18,10 @@ class UserData {
   }
 }
 
+const ping = ((req:Request, res:Response):void => {
+  res.status(200).send('pong')
+})
+
 const userLogin = (async (req:Request, res:Response):Promise<Response> => {
   try {
     const login = await modelUser.findOne({email: req.body.email, password: req.body.password})
@@ -29,14 +33,14 @@ const userLogin = (async (req:Request, res:Response):Promise<Response> => {
         return res.status(200).json({ token: token })
 
       } catch (error) {
-        console.log('Unable to sign in', error)
+        return res.status(401).json({ message: 'Unable to sign in', error })
       }
     }
 
-    return res.status(404).json({message: 'User not found!' })
+    return res.status(404).json({ message: 'User not found!' })
 
   } catch (error) {
-    return res.status(500).json('Internal Server Error')
+    return res.status(500).json({ message: 'Internal Server Error' })
   }
 })
 
@@ -47,7 +51,7 @@ const findAllUsers = (async(req:Request, res:Response):Promise<Response> => {
     return res.json(getAll)
 
   } catch (error) {
-    return res.status(500).json('Internal Server Error')
+    return res.status(500).json({ message: 'Internal Server Error' })
   }
 })
 
@@ -64,10 +68,10 @@ const createUser = (async(req:Request, res:Response):Promise<Response> => {
     const saveUser = await modelUser.create(user)
     saveUser.save()
 
-    return res.json(saveUser)
+    return res.status(201).json({message: `User ${user.name} created!`})
 
   } catch (error) {
-    return res.status(500).json('Internal Server Error')
+    return res.status(500).json({ message: 'Internal Server Error' })
   }
 })
 
@@ -88,7 +92,7 @@ const updateUser = (async(req:Request, res:Response):Promise<Response> => {
     return res.json(update)
 
   } catch (error) {
-    return res.status(500).json('Internal Server Error')
+    return res.status(500).json({ message: 'Internal Server Error' })
   }
 })
 
@@ -98,14 +102,15 @@ const deleteUser = (async(req:Request, res:Response):Promise<Response> => {
 
     deleteUser.save()
 
-    return res.json(`User ${req.params.id} was deleted!`)
+    return res.status(200).json({ message: `User ${req.params.id} was deleted!` })
 
   } catch (error) {
-    return res.status(500).json('Internal Server Error')
+    return res.status(500).json({ message: 'Internal Server Error' })
   }
 })
 
 export {
+  ping,
   userLogin,
   createUser,
   findAllUsers,

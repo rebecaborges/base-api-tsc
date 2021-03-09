@@ -1,48 +1,56 @@
 import express from 'express'
 import tokenValidation from '../middlewares/jwt'
 import {
+  ping,
   userLogin,
   createUser,
   findAllUsers,
   updateUser,
-  deleteUser
+  deleteUser,
 } from '../controllers/index'
 
 const router = express.Router()
 
-const login = router.get(
+const pingResponse = router.get(
+  '/ping',
+  ping
+)
+
+const login = router.post(
   '/login',
+  tokenValidation,
   userLogin
 )
 
 const getAllRoute = router.get(
-  '/',
+  '/users',
   tokenValidation,
   findAllUsers,
 )
 
 const createRoute = router.post(
-  '/',
+  '/users',
   tokenValidation,
   createUser
 )
 
 const updateRoute = router.put(
-  '/user/:id',
+  '/users/:id',
   tokenValidation,
   updateUser
 )
 
 const deleteUserRoute = router.delete(
-  '/user/:id',
+  '/users/:id',
   tokenValidation,
   deleteUser
 )
 
 export {
+  pingResponse,
   login,
   createRoute,
   getAllRoute,
   updateRoute,
-  deleteUserRoute
+  deleteUserRoute,
 }
