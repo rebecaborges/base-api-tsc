@@ -1,3 +1,4 @@
+import './services/mongo'
 import express from 'express'
 import * as OpenApiValidator from 'express-openapi-validator'
 import {

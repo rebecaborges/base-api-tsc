@@ -7,7 +7,7 @@ import {
   findAllUsers,
   updateUser,
   deleteUser,
-} from '../controllers/index'
+} from '../controllers/user'
 
 const router = express.Router()
 
@@ -18,7 +18,6 @@ const pingResponse = router.get(
 
 const login = router.post(
   '/login',
-  tokenValidation,
   userLogin
 )
 
